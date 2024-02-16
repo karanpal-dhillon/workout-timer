@@ -4,6 +4,10 @@ const Calculator = ({ workouts }) => {
   const [number, setNumber] = useState(workouts[0].numExercises);
   const [sets, setSets] = useState(3);
   const [speed, setSpeed] = useState(90);
+  const [durationBreak, setDurationBreak] = useState(5);
+  const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
+  const mins = Math.floor(duration);
+  const seconds = (duration - mins) * 60;
 
   return (
     <div>
@@ -46,7 +50,26 @@ const Calculator = ({ workouts }) => {
           />
           <span>{speed} sec/exercise</span>
         </div>
+        <div>
+          <label htmlFor="durationBreak">Break Length</label>
+          <input
+            type="range"
+            min={1}
+            max={10}
+            value={durationBreak}
+            onChange={(e) => setDurationBreak(Number(e.target.value))}
+          />
+          <span>{durationBreak} min</span>
+        </div>
       </form>
+      <section>
+        <button>-</button>
+        <p>
+          {mins > 10 ? mins : `0${mins}`}:
+          {seconds > 10 ? seconds : `0${seconds}`}
+        </p>
+        <button>+</button>
+      </section>
     </div>
   );
 };
