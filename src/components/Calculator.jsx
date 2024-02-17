@@ -1,13 +1,20 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useState, memo } from "react";
+
 const Calculator = ({ workouts }) => {
   const [number, setNumber] = useState(workouts[0].numExercises);
   const [sets, setSets] = useState(3);
   const [speed, setSpeed] = useState(90);
   const [durationBreak, setDurationBreak] = useState(5);
-  const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
+  const [duration, setDuration] = useState(0);
+  // const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
   const mins = Math.floor(duration);
   const seconds = (duration - mins) * 60;
+
+  useEffect(() => {
+    setDuration((number * sets * speed) / 60 + (sets - 1) * durationBreak);
+  }, [durationBreak, number, sets, speed]);
 
   return (
     <div>
@@ -63,12 +70,12 @@ const Calculator = ({ workouts }) => {
         </div>
       </form>
       <section>
-        <button>-</button>
+        <button onClick={() => setDuration((curr) => curr - 1)}>-</button>
         <p>
           {mins > 10 ? mins : `0${mins}`}:
           {seconds > 10 ? seconds : `0${seconds}`}
         </p>
-        <button>+</button>
+        <button onClick={() => setDuration((curr) => curr + 1)}>+</button>
       </section>
     </div>
   );
@@ -77,4 +84,4 @@ const Calculator = ({ workouts }) => {
 Calculator.propTypes = {
   workouts: PropTypes.array,
 };
-export default Calculator;
+export default memo(Calculator);
