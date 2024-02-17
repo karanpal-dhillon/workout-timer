@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
-import Calculator from './components/Calculator'
+import Calculator from "./components/Calculator";
+import Time from "./components/Time";
 
 function App() {
   const [time, setTime] = useState(formatTime(new Date()));
@@ -39,16 +40,16 @@ function App() {
     }).format(date);
   }
 
-  useEffect(function () {
-    const id = setInterval(() => setTime(formatTime(new Date())), 1000)
-    return () => clearInterval(id)
+  useEffect(function() {
+    const id = setInterval(() => setTime(formatTime(new Date())), 1000);
+    return () => clearInterval(id);
   }, []);
 
   return (
     <main>
       <h1>WORKOUT TIMER</h1>
-      <time>For your workout on {time}</time>
-      <Calculator workouts={workouts}/>
+      <Time formatTime={formatTime} />
+      <Calculator workouts={workouts} />
     </main>
   );
 }
